@@ -1,10 +1,7 @@
 import pygame
 import sys
 from level import Level
-
 from settings import *
-
-
 # from debug import debug
 
 
