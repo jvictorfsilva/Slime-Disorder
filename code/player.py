@@ -9,14 +9,20 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(-8,-28) # editar conforme a hitbox do personagem
 
+        # movimento
         self.direction = pygame.math.Vector2()
         self.speed = 5
+        self.attacking = False
+        self.attack_cooldown = 400
+        self.attack_time = None
 
         self.obstacle_sprites = obstacle_sprites
+
 
     def input(self):
         keys = pygame.key.get_pressed()
 
+        # Input movimentação player
         if keys[pygame.K_w]:
             self.direction.y = -1
         elif keys[pygame.K_s]:
@@ -30,6 +36,17 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = -1
         else:
             self.direction.x = 0
+
+        # input ataque player
+        if keys[pygame.K_SPACE] and not self.attacking:
+            self.attacking = True
+            self.attack_time = pygame.time.get_ticks()
+            print('attack')
+
+        # input poder/magica
+        if keys[pygame.K_LCTRL] and not self.attacking:
+            self.attacking = True
+            print('magic')
 
     def move(self,speed):
         if self.direction.magnitude() != 0:
@@ -58,6 +75,13 @@ class Player(pygame.sprite.Sprite):
                     if self.direction.y < 0:  # moving up
                         self.hitbox.top = sprite.hitbox.bottom
 
+    def cooldowns(self):
+        current_time = pygame.time.get_ticks()
+
+        if self.attacking:
+            if current_time - self.attack_time >= self.attack_cooldown):
+                self.attacking = False
     def update(self):
         self.input()
+        self.
         self.move(self.speed)

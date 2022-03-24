@@ -2,7 +2,8 @@ import pygame
 from settings import *
 from tile import Tile
 from player import Player
-from support import import_csv_layout
+from support import *
+from random import choice
 # from debug import debug
 
 class Level:
@@ -24,6 +25,10 @@ class Level:
             'grass': import_csv_layout('../map/map_Grass.csv'),
             'object': import_csv_layout('../map/map_Objects.csv'),
         }
+        graphics = {
+            'grass': import_folder('../graphics/Grass'),
+            'object': import_folder('../graphics/objects'),
+        }
 
         for style,layout in layout.items():
             for row_index, row in enumerate(layout):
@@ -35,14 +40,13 @@ class Level:
                             Tile((x,y),[self.obstacle_sprites],'invisible')
                         if style == 'grass':
                             # Cria a grama
-                            pass
+                            random_grass_image = choice(graphics['grass'])
+                            Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'grass',random_grass_image)
                         if style == 'object':
                             # Cria os objetos
-                            pass
-        #         if col == 'x':
-        #             Tile((x,y),[self.visible_sprites,self.obstacle_sprites])
-        #         if col == 'p':
-        #             self.player = Player((x,y),[self.visible_sprites],self.obstacle_sprites)
+                            surf = graphics['object'][int(col)]
+                            Tile((x,y),[self.visible_sprites,self.obstacle_sprites],'object',surf)
+
         self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
