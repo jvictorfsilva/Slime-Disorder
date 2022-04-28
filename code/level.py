@@ -6,6 +6,7 @@ from support import *
 from random import choice
 from weapon import Weapon
 from debug import debug
+#from ui import UI
 
 class Level:
     def __init__(self):
@@ -23,15 +24,18 @@ class Level:
         # sprite setup
         self.create_map()
 
+        # interface do usuario
+        #self.ui = UI()
+
     def create_map(self):
         layout = {
-            'boundary': import_csv_layout('./map/map_FloorBlocks.csv'),
-            'grass': import_csv_layout('./map/map_Grass.csv'),
-            'object': import_csv_layout('./map/map_Objects.csv'),
+            'boundary': import_csv_layout('../map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('../map/map_Grass.csv'),
+            'object': import_csv_layout('../map/map_Objects.csv'),
         }
         graphics = {
-            'grass': import_folder('./graphics/Grass'),
-            'object': import_folder('./graphics/objects'),
+            'grass': import_folder('../graphics/Grass'),
+            'object': import_folder('../graphics/objects'),
         }
 
         for style,layout in layout.items():
@@ -65,6 +69,7 @@ class Level:
         # update e Draw do jogo
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        #self.ui.display(self.player)
         # debug(self.player.status)
 
 
@@ -79,7 +84,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
 
         # Criação do Chão
-        self.floor_surf = pygame.image.load('./graphics/tilemap/ground.png').convert()
+        self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0,0))
 
     def custom_draw(self,player):

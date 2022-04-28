@@ -6,7 +6,7 @@ from support import import_folder
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites, create_attack, destroy_weapon):
         super().__init__(groups)
-        self.image = pygame.image.load("./graphics/test/player.png").convert_alpha()
+        self.image = pygame.image.load("../graphics/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(
             -8, -28
@@ -16,15 +16,15 @@ class Player(pygame.sprite.Sprite):
         self.import_player_assets()
         self.status = "down"
         self.frame_index = 0
-        self.animation_speed = 0.10
+        self.animation_speed = 0.15
 
         # movimento
         self.direction = pygame.math.Vector2()
         self.speed = 5
-        self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
         self.obstacle_sprites = obstacle_sprites
+        self.attacking = False
 
         # Weapon
         self.create_attack = create_attack
@@ -35,8 +35,16 @@ class Player(pygame.sprite.Sprite):
         self.weapon_switch_time = None
         self.switch_duration_cooldown = 200
 
+        # status
+        self.stats = {'health': 100, 'energy': 60, 'attack':10, 'magic': 4, 'speed': 5}
+        self.health = self.stats['health']
+        self.energy = self.stats['energy']
+        self.speed = self.stats['speed']
+        self.exp = 123
+
+
     def import_player_assets(self):
-        character_path = "./graphics/player/"
+        character_path = "../graphics/player/"
         self.animations = {
             "up": [],
             "down": [],
@@ -57,6 +65,10 @@ class Player(pygame.sprite.Sprite):
             self.animations[animation] = import_folder(full_path)
 
     def input(self):
+        if self.attacking:
+            self.direction.y = 0
+            self.direction.x = 0
+
         if not self.attacking:
             keys = pygame.key.get_pressed()
             mbutton = pygame.mouse.get_pressed()
@@ -157,6 +169,9 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
                 self.destroy_weapon()
+        if not self.can_switch_weapon:
+            if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
+                self.can_switch_weapon = True
 
     def animate(self):
         animation = self.animations[self.status]
@@ -168,7 +183,7 @@ class Player(pygame.sprite.Sprite):
 
         # set the image
         self.image = animation[int(self.frame_index)]
-        self.rect = self.image.get_rect(center=self.hitbox.center)
+        self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def update(self):
         self.input()
