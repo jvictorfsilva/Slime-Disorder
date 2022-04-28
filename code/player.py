@@ -37,6 +37,7 @@ class Player(pygame.sprite.Sprite):
 
     def input(self):
         keys = pygame.key.get_pressed()
+        mbutton = pygame.mouse.get_pressed()
 
         # Input movimentação player
         if keys[pygame.K_w]:
@@ -58,15 +59,14 @@ class Player(pygame.sprite.Sprite):
             self.direction.x = 0
 
         # input ataque player
-        if keys[pygame.K_SPACE] and not self.attacking:
+        if mbutton == (1, 0, 0) and not self.attacking:
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()
             print('attack')
 
         # input poder/magica
-        if keys[pygame.K_LCTRL] and not self.attacking:
+        if keys[pygame.K_f] and not self.attacking:
             self.attacking = True
-
             print('magic')
 
     def get_status(self):
