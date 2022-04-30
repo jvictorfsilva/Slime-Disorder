@@ -6,7 +6,7 @@ from support import *
 from random import choice
 from weapon import Weapon
 from debug import debug
-#from ui import UI
+from ui import UI
 
 class Level:
     def __init__(self):
@@ -25,7 +25,7 @@ class Level:
         self.create_map()
 
         # interface do usuario
-        #self.ui = UI()
+        self.ui = UI()
 
     def create_map(self):
         layout = {
@@ -69,7 +69,7 @@ class Level:
         # update e Draw do jogo
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
-        #self.ui.display(self.player)
+        self.ui.display(self.player)
         # debug(self.player.status)
 
 
