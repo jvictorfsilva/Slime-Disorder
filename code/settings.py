@@ -23,6 +23,8 @@ HEALTH_COLOR = "#B20002"
 ENERGY_COLOR = "gold"
 UI_BORDER_COLOR_ACTIVE = "gold"
 
+# weapon
+
 weapon_data = {
     "sword": {
         "cooldown": 100,
@@ -61,8 +63,8 @@ weapon_data = {
     },
 }
 
-# magica
 # magic
+
 magic_data = {
     "flame": {
         "strength": 5,
@@ -75,10 +77,63 @@ magic_data = {
         "graphic": "../graphics/particles/heal/heal.png",
     },
 }
+
+# special attack
+
 spattack_data = {
     "operation_flame": {
         "damage": 40,
         "cost": 40,
         "cooldown": 50000,
+    },
+}
+
+
+# enemy
+
+monster_data = {
+    "squid": {
+        "health": 100,
+        "exp": 100,
+        "damage": 20,
+        "attack_type": "slash",
+        "attack_sound": "../audio/attack/slash.wav",
+        "speed": 3,
+        "resistance": 3,
+        "attack_radius": 80,
+        "notice_radius": 360,
+    },
+    "raccoon": {
+        "health": 300,
+        "exp": 250,
+        "damage": 40,
+        "attack_type": "claw",
+        "attack_sound": "../audio/attack/claw.wav",
+        "speed": 2,
+        "resistance": 3,
+        "attack_radius": 120,
+        "notice_radius": 400,
+    },
+    "spirit": {
+        "health": 100,
+        "exp": 110,
+        "damage": 8,
+        "attack_type": "thunder",
+        "attack_sound": "../audio/attack/fireball.wav",
+        "speed": 4,
+        "resistance": 3,
+        "attack_radius": 60,
+        "notice_radius": 350,
+    },
+    "bamboo": {
+        "health": 70,
+        "exp": 120,
+        "damage": 6,
+        "attack_type": "leaf_attack",
+        "attack_sound": "../audio/attack/slash.wav",
+        "speed": 3,
+        "resistance": 3,
+        "attack_radius": 50,
+        "notice_radius": 300,
     },
 }

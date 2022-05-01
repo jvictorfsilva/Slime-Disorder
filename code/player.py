@@ -1,9 +1,10 @@
 import pygame
+from entity import Entity
 from settings import *
 from support import import_folder
 
 
-class Player(pygame.sprite.Sprite):
+class Player(Entity):
     def __init__(
         self,
         pos,
@@ -25,11 +26,8 @@ class Player(pygame.sprite.Sprite):
         # graphics setup
         self.import_player_assets()
         self.status = "down"
-        self.frame_index = 0
-        self.animation_speed = 0.15
 
         # movimento
-        self.direction = pygame.math.Vector2()
         self.speed = 5
         self.attack_cooldown = 400
         self.attack_time = None
