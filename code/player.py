@@ -5,7 +5,15 @@ from support import import_folder
 
 class Player(pygame.sprite.Sprite):
     def __init__(
-        self, pos, groups, obstacle_sprites, create_attack, destroy_weapon, create_magic
+        self,
+        pos,
+        groups,
+        obstacle_sprites,
+        create_attack,
+        destroy_weapon,
+        create_magic,
+        create_spattack,
+        destroy_spattack,
     ):
         super().__init__(groups)
         self.image = pygame.image.load("../graphics/test/player.png").convert_alpha()
@@ -50,6 +58,12 @@ class Player(pygame.sprite.Sprite):
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
         self.magic_switch_time = None
+
+        # Special Attack
+        self.create_spattack = create_spattack
+        self.destroy_spattack = destroy_spattack
+        self.spattack_index = 0
+        self.spattack = list(spattack_data.keys())[self.spattack_index]
 
     def import_player_assets(self):
         character_path = "../graphics/player/"
@@ -132,6 +146,8 @@ class Player(pygame.sprite.Sprite):
                 cost = list(magic_data.values())[self.magic_index]["cost"]
                 self.create_magic(style, strength, cost)
 
+            # troca poder/magica
+
             if keys[pygame.K_e] and self.can_switch_magic:
 
                 self.can_switch_magic = False
@@ -143,6 +159,18 @@ class Player(pygame.sprite.Sprite):
                     self.magic_index = 0
 
                 self.magic = list(magic_data.keys())[self.magic_index]
+
+            # special attack
+
+            if (
+                self.weapon_index == 3
+                and self.magic_index == 0
+                and self.attacking == False
+            ):
+                if keys[pygame.K_x]:
+                    self.attacking = True
+                    self.attack_time = pygame.time.get_ticks()
+                    self.create_spattack()
 
     def get_status(self):
 
@@ -197,6 +225,7 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
                 self.destroy_weapon()
+                self.destroy_spattack()
         if not self.can_switch_weapon:
             if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_weapon = True

@@ -5,6 +5,7 @@ from player import Player
 from support import *
 from random import choice
 from weapon import Weapon
+from spattack import spattack
 from debug import debug
 from ui import UI
 
@@ -21,6 +22,9 @@ class Level:
 
         # attack sprites
         self.current_attack = None
+
+        # spattack sprites
+        self.current_spattack = None
 
         # sprite setup
         self.create_map()
@@ -73,6 +77,8 @@ class Level:
             self.create_attack,
             self.destroy_weapon,
             self.create_magic,
+            self.create_spattack,
+            self.destroy_spattack,
         )
 
     def create_attack(self):
@@ -83,10 +89,18 @@ class Level:
         print(strength)
         print(cost)
 
+    def create_spattack(self):
+        self.current_spattack = spattack(self.player, [self.visible_sprites])
+
     def destroy_weapon(self):
         if self.current_attack:
             self.current_attack.kill()
         self.current_attack = None
+
+    def destroy_spattack(self):
+        if self.current_spattack:
+            self.current_spattack.kill()
+        self.current_spattack = None
 
     def run(self):
         # update e Draw do jogo

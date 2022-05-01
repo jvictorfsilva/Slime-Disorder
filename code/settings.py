@@ -75,3 +75,10 @@ magic_data = {
         "graphic": "../graphics/particles/heal/heal.png",
     },
 }
+spattack_data = {
+    "operation_flame": {
+        "damage": 40,
+        "cost": 40,
+        "cooldown": 50000,
+    },
+}
