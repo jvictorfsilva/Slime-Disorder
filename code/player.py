@@ -183,6 +183,8 @@ class Player(Entity):
             #         self.attacking = True
             #         self.attack_time = pygame.time.get_ticks()
             #         self.create_spattack()
+            # else:
+            #     self.spattack_index = None
 
     #####################################################################################################################################
 
