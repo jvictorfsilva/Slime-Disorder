@@ -81,9 +81,4 @@ spattack_data = {
         "cost": 40,
         "cooldown": 50000,
     },
-    "operation_heal": {
-        "damage": 40,
-        "cost": 40,
-        "cooldown": 50000,
-    },
 }
