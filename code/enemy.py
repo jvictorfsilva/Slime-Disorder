@@ -90,7 +90,7 @@ class Enemy(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
-    def attack_cooldown(self):
+    def cooldown(self):
         if not self.can_attack:
             current_time = pygame.time.get_ticks()
             if current_time - self.attack_time >= self.attack_cooldown:
@@ -99,7 +99,7 @@ class Enemy(Entity):
     def update(self):
         self.move(self.speed)
         self.animate()
-        self.attack_cooldown()
+        self.cooldown()
 
     def enemy_update(self, player):
         self.get_status(player)
