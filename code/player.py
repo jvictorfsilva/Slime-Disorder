@@ -161,6 +161,7 @@ class Player(pygame.sprite.Sprite):
                 self.magic = list(magic_data.keys())[self.magic_index]
 
             # special attack
+            ############################# Para add mais spattacks colocar os index aqui e mudar o spattack_index #########################
 
             if (
                 self.weapon_index == 3
@@ -168,9 +169,24 @@ class Player(pygame.sprite.Sprite):
                 and self.attacking == False
             ):
                 if keys[pygame.K_x]:
+                    self.spattack_index = 0
+                    self.spattack = list(spattack_data.keys())[self.spattack_index]
                     self.attacking = True
                     self.attack_time = pygame.time.get_ticks()
                     self.create_spattack()
+            # elif (
+            #     self.weapon_index == 1
+            #     and self.magic_index == 1
+            #     and self.attacking == False
+            # ):
+            #     self.spattack = list(spattack_data.keys())[self.spattack_index]
+            #     self.spattack_index = 1
+            #     if keys[pygame.K_x]:
+            #         self.attacking = True
+            #         self.attack_time = pygame.time.get_ticks()
+            #         self.create_spattack()
+
+    #####################################################################################################################################
 
     def get_status(self):
 
