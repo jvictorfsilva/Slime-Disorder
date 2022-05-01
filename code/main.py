@@ -2,6 +2,7 @@ import pygame
 import sys
 from level import Level
 from settings import *
+
 # from debug import debug
 
 
@@ -10,7 +11,7 @@ class Game:
         # setup geral
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption('NOME DO JOGO')
+        pygame.display.set_caption("NOME DO JOGO")
         self.clock = pygame.time.Clock()
 
         self.level = Level()
@@ -22,13 +23,13 @@ class Game:
                     pygame.quit()
                     sys.exit()
 
-            self.screen.fill('black')
+            self.screen.fill("black")
             self.level.run()
             # debug('Test')
             pygame.display.update()
             self.clock.tick(FPS)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     game = Game()
     game.run()
