@@ -167,6 +167,7 @@ class Player(Entity):
             if (
                 self.weapon_index == 3
                 and self.magic_index == 0
+                and self.energy >= cost
                 and self.attacking == False
             ):
                 if keys[pygame.K_x]:
@@ -257,9 +258,23 @@ class Player(Entity):
         weapon_damage = weapon_data[self.weapon]["damage"]
         return base_damage + weapon_damage
 
+    def get_full_magic_damage(self):
+        base_damage = self.stats["magic"]
+        spell_damage = magic_data[self.magic]["strength"]
+        return base_damage + spell_damage
+
+    def energy_recovery(self):
+        if self.energy < self.stats["energy"]:
+
+            # Calculo regeneração de mana
+            self.energy += 0.01 * (self.stats["magic"] * 0.25)
+        else:
+            self.energy = self.stats["energy"]
+
     def update(self):
         self.input()
         self.cooldowns()
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.energy_recovery()
