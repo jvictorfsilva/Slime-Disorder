@@ -1,4 +1,5 @@
 import pygame
+from spattack import Spattack
 from magic import MagicPlayer
 from particles import AnimationPlayer
 from settings import *
@@ -8,7 +9,6 @@ from enemy import Enemy
 from support import *
 from random import choice, randint
 from weapon import Weapon
-from spattack import spattack
 from debug import debug
 from ui import UI
 
@@ -28,9 +28,6 @@ class Level:
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
 
-        # spattack sprites
-        self.current_spattack = None
-
         # sprite setup
         self.create_map()
 
@@ -40,6 +37,9 @@ class Level:
         # particles
         self.animation_player = AnimationPlayer()
         self.magic_player = MagicPlayer(self.animation_player)
+
+        # spattack sprites
+        self.current_spattack = None
 
     def create_map(self):
         layout = {
@@ -93,7 +93,6 @@ class Level:
                                     self.destroy_weapon,
                                     self.create_magic,
                                     self.create_spattack,
-                                    self.destroy_spattack,
                                 )
                             else:
                                 if col == "390":
@@ -128,18 +127,20 @@ class Level:
                 self.player, cost, [self.visible_sprites, self.attack_sprites]
             )
 
-    def create_spattack(self):
-        self.current_spattack = spattack(self.player, [self.visible_sprites])
+    def create_spattack(self, style, cost):
+        if style == "operation_flame":
+            if self.player.energy >= cost:
+                self.player.energy -= cost
+                self.current_spattack = Spattack(
+                    self.player, [self.visible_sprites, self.attack_sprites]
+                )
 
     def destroy_weapon(self):
         if self.current_attack:
             self.current_attack.kill()
-        self.current_attack = None
-
-    def destroy_spattack(self):
         if self.current_spattack:
             self.current_spattack.kill()
-        self.current_spattack = None
+        self.current_attack = None
 
     def player_attack_logic(self):
         if self.attack_sprites:

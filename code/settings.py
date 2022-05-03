@@ -82,9 +82,8 @@ magic_data = {
 
 spattack_data = {
     "operation_flame": {
-        "damage": 40,
+        "damage": 53,
         "cost": 40,
-        "cooldown": 50000,
     },
 }
 

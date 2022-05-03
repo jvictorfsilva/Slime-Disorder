@@ -14,7 +14,6 @@ class Player(Entity):
         destroy_weapon,
         create_magic,
         create_spattack,
-        destroy_spattack,
     ):
         super().__init__(groups)
         self.image = pygame.image.load("../graphics/test/player.png").convert_alpha()
@@ -58,7 +57,6 @@ class Player(Entity):
 
         # Special Attack
         self.create_spattack = create_spattack
-        self.destroy_spattack = destroy_spattack
         self.spattack_index = 0
         self.spattack = list(spattack_data.keys())[self.spattack_index]
 
@@ -161,36 +159,16 @@ class Player(Entity):
 
                 self.magic = list(magic_data.keys())[self.magic_index]
 
+            if keys[pygame.K_g]:
+                print(list(spattack_data.values())[self.spattack_index]["cost"])
             # special attack
-            ############################# Para add mais spattacks colocar os index aqui e mudar o spattack_index #########################
-
-            if (
-                self.weapon_index == 3
-                and self.magic_index == 0
-                and self.energy >= cost
-                and self.attacking == False
-            ):
+            if self.weapon_index == 3 and self.magic_index == 0:
                 if keys[pygame.K_x]:
-                    self.spattack_index = 0
-                    self.spattack = list(spattack_data.keys())[self.spattack_index]
                     self.attacking = True
                     self.attack_time = pygame.time.get_ticks()
-                    self.create_spattack()
-            # elif (
-            #     self.weapon_index == 1
-            #     and self.magic_index == 1
-            #     and self.attacking == False
-            # ):
-            #     self.spattack = list(spattack_data.keys())[self.spattack_index]
-            #     self.spattack_index = 1
-            #     if keys[pygame.K_x]:
-            #         self.attacking = True
-            #         self.attack_time = pygame.time.get_ticks()
-            #         self.create_spattack()
-            # else:
-            #     self.spattack_index = None
-
-    #####################################################################################################################################
+                    style = list(spattack_data.keys())[self.spattack_index]
+                    cost = list(spattack_data.values())[self.spattack_index]["cost"]
+                    self.create_spattack(style, cost)
 
     def get_status(self):
 
@@ -221,7 +199,6 @@ class Player(Entity):
             ):
                 self.attacking = False
                 self.destroy_weapon()
-                self.destroy_spattack()
         if not self.can_switch_weapon:
             if current_time - self.weapon_switch_time >= self.switch_duration_cooldown:
                 self.can_switch_weapon = True
@@ -262,6 +239,11 @@ class Player(Entity):
         base_damage = self.stats["magic"]
         spell_damage = magic_data[self.magic]["strength"]
         return base_damage + spell_damage
+
+    def get_full_spattack_damage(self):
+        base_damage = (self.stats["attack"] * 0.20) + (self.stats["magic"] * 0.20)
+        spattack_damage = spattack_data[self.spattack]["damage"]
+        return base_damage + spattack_damage
 
     def energy_recovery(self):
         if self.energy < self.stats["energy"]:
