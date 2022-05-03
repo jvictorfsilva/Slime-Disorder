@@ -1,10 +1,11 @@
 import pygame
+from particles import AnimationPlayer
 from settings import *
 from tile import Tile
 from player import Player
 from enemy import Enemy
 from support import *
-from random import choice
+from random import choice, randint
 from weapon import Weapon
 from spattack import spattack
 from debug import debug
@@ -34,6 +35,9 @@ class Level:
 
         # interface do usuario
         self.ui = UI()
+
+        # particles
+        self.animation_player = AnimationPlayer()
 
     def create_map(self):
         layout = {
@@ -105,6 +109,7 @@ class Level:
                                     [self.visible_sprites, self.attackable_sprites],
                                     self.obstacle_sprites,
                                     self.damage_player,
+                                    self.trigger_death_particle,
                                 )
 
     def create_attack(self):
@@ -139,6 +144,13 @@ class Level:
                 if collision_sprites:
                     for target_sprite in collision_sprites:
                         if target_sprite.sprite_type == "grass":
+                            pos = target_sprite.rect.center
+                            offset = pygame.math.Vector2(0, 75)
+                            for leaf in range(randint(3, 6)):
+                                self.animation_player.create_grass_particles(
+                                    pos - offset,
+                                    [self.visible_sprites],
+                                )
                             target_sprite.kill()
                         else:
                             target_sprite.get_damage(
@@ -150,7 +162,12 @@ class Level:
             self.player.health -= amount
             self.player.vulnerable = False
             self.player.hurt_time = pygame.time.get_ticks()
-            # spawn particles
+            self.animation_player.create_particles(
+                attack_type, self.player.rect.center, [self.visible_sprites]
+            )
+
+    def trigger_death_particle(self, pos, particle_type):
+        self.animation_player.create_particles(particle_type, pos, self.visible_sprites)
 
     def run(self):
         # update e Draw do jogo
@@ -177,11 +194,11 @@ class YSortCameraGroup(pygame.sprite.Group):
 
     def custom_draw(self, player):
 
-        # getting offset
+        # getting the offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
-        # draw do chão
+        # drawing the floor
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
