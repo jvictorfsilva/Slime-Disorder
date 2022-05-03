@@ -136,7 +136,7 @@ class Item:
         ):
             player.exp -= player.upgrade_cost[upgrade_attribute]
             player.stats[upgrade_attribute] *= 1.2
-            player.upgrade_cost[upgrade_attribute] *= 1.4
+            player.upgrade_cost[upgrade_attribute] *= 1.5
 
     def display(self, surface, selection_num, name, value, max_value, cost):
         if self.index == selection_num:

@@ -134,7 +134,7 @@ class Level:
     def create_spattack(self, style, cost):
         if style == "operation_flame":
             if self.player.energy >= cost:
-                self.player.energy -= cost
+                # self.player.energy -= cost
                 self.current_spattack = Spattack(
                     self.player, [self.visible_sprites, self.attack_sprites]
                 )

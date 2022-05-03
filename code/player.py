@@ -19,7 +19,7 @@ class Player(Entity):
         self.image = pygame.image.load("../graphics/test/player.png").convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(
-            -8, -28
+            HITBOX_OFFSET["player"]
         )  # editar conforme a hitbox do personagem
 
         # graphics setup
@@ -47,21 +47,21 @@ class Player(Entity):
             "energy": 60,
             "attack": 10,
             "magic": 4,
-            "speed": 5,
+            "speed": 4,
         }
         self.max_stats = {
             "health": 300,
             "energy": 140,
             "attack": 20,
             "magic": 10,
-            "speed": 12,
+            "speed": 7,
         }
         self.upgrade_cost = {
             "health": 100,
             "energy": 100,
             "attack": 100,
             "magic": 100,
-            "speed": 100,
+            "speed": 300,
         }
 
         self.health = self.stats["health"]
@@ -85,6 +85,10 @@ class Player(Entity):
         self.vulnerable = True
         self.hurt_time = None
         self.invulnerability_duration = 500
+
+        # import sound
+        self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword.wav")
+        self.weapon_attack_sound.set_volume(0.4)
 
     def import_player_assets(self):
         character_path = "../graphics/player/"
@@ -139,6 +143,7 @@ class Player(Entity):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
+                self.weapon_attack_sound.play()
 
             # Troca das weapons
 
@@ -180,8 +185,6 @@ class Player(Entity):
 
                 self.magic = list(magic_data.keys())[self.magic_index]
 
-            if keys[pygame.K_g]:
-                print(list(spattack_data.values())[self.spattack_index]["cost"])
             # special attack
             if self.weapon_index == 3 and self.magic_index == 0:
                 if keys[pygame.K_x]:

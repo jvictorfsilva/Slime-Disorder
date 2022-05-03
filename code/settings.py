@@ -3,6 +3,8 @@ HEIGHT = 720
 FPS = 60
 TILESIZE = 64
 
+# Hitboxes
+HITBOX_OFFSET = {"player": [-8, -28], "object": -40, "grass": -10, "invisible": 0}
 
 # HUD
 BAR_HEIGHT = 20

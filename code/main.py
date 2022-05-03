@@ -10,10 +10,15 @@ class Game:
         # setup geral
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("NOME DO JOGO")
+        pygame.display.set_caption("Slime Disorder")
         self.clock = pygame.time.Clock()
 
         self.level = Level()
+
+        # sound
+        main_sound = pygame.mixer.Sound("../audio/main.ogg")
+        main_sound.set_volume(0.4)
+        main_sound.play(loops=-1)
 
     def run(self):
         while True:
@@ -25,7 +30,7 @@ class Game:
                     if event.key == pygame.K_TAB:
                         self.level.toggle_menu()
 
-            self.screen.fill("black")
+            self.screen.fill(WATER_COLOR)
             self.level.run()
             # debug('Test')
             pygame.display.update()
