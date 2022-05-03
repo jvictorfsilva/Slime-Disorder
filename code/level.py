@@ -1,4 +1,5 @@
 import pygame
+from magic import MagicPlayer
 from particles import AnimationPlayer
 from settings import *
 from tile import Tile
@@ -38,6 +39,7 @@ class Level:
 
         # particles
         self.animation_player = AnimationPlayer()
+        self.magic_player = MagicPlayer(self.animation_player)
 
     def create_map(self):
         layout = {
@@ -118,9 +120,11 @@ class Level:
         )
 
     def create_magic(self, style, strength, cost):
-        print(style)
-        print(strength)
-        print(cost)
+        if style == "heal":
+            self.magic_player.heal(self.player, strength, cost, [self.visible_sprites])
+
+        if style == "flame":
+            pass
 
     def create_spattack(self):
         self.current_spattack = spattack(self.player, [self.visible_sprites])
