@@ -9,6 +9,7 @@ from enemy import Enemy
 from support import *
 from random import choice, randint
 from weapon import Weapon
+from upgrade import Upgrade
 from debug import debug
 from ui import UI
 
@@ -18,6 +19,7 @@ class Level:
 
         # Pegar a display Surface
         self.display_surface = pygame.display.get_surface()
+        self.game_paused = False
 
         # Setup dos Grupos de Sprites
         self.visible_sprites = YSortCameraGroup()
@@ -33,6 +35,7 @@ class Level:
 
         # interface do usuario
         self.ui = UI()
+        self.upgrade = Upgrade(self.player)
 
         # particles
         self.animation_player = AnimationPlayer()
@@ -111,6 +114,7 @@ class Level:
                                     self.obstacle_sprites,
                                     self.damage_player,
                                     self.trigger_death_particle,
+                                    self.add_exp,
                                 )
 
     def create_attack(self):
@@ -176,13 +180,23 @@ class Level:
     def trigger_death_particle(self, pos, particle_type):
         self.animation_player.create_particles(particle_type, pos, self.visible_sprites)
 
+    def add_exp(self, amount):
+
+        self.player.exp += amount
+
+    def toggle_menu(self):
+        self.game_paused = not self.game_paused
+
     def run(self):
-        # update e Draw do jogo
         self.visible_sprites.custom_draw(self.player)
-        self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
-        self.player_attack_logic()
         self.ui.display(self.player)
+
+        if self.game_paused:
+            self.upgrade.display()
+        else:
+            self.visible_sprites.update()
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
 
 
 class YSortCameraGroup(pygame.sprite.Group):
