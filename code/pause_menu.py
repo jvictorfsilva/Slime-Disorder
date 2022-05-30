@@ -6,6 +6,7 @@ class Pause_menu:
     def __init__(self):
 
         # general setup
+        self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -13,16 +14,7 @@ class Pause_menu:
         resume_btn_image = "../graphics/buttons/resume.png"
         options_btn_image = "../graphics/buttons/options.png"
         exit_btn_image = "../graphics/buttons/exit.png"
-        count = 0
         pygame.mouse.set_visible(False)
-
-        pos = pygame.mouse.get_pos()
-
-        bg = pygame.image.load("../graphics/buttons/pause_menu.png")
-        self.screen.blit(bg, [0, 0])
-
-        logo = pygame.image.load("../graphics/buttons/logo.png")
-        self.screen.blit(logo, [185, 0])
 
         p1 = Botao(480, 280, resume_btn_image)
         p2 = Botao(480, 425, options_btn_image)
@@ -32,8 +24,13 @@ class Pause_menu:
         botoes.append(p1)
         botoes.append(p2)
         botoes.append(ex)
+        bg = pygame.image.load("../graphics/buttons/pause_menu.png")
+        self.screen.blit(bg, [0, 0])
 
-        count += 1
+        logo = pygame.image.load("../graphics/buttons/logo.png")
+        self.screen.blit(logo, [185, 0])
+
+        pos = pygame.mouse.get_pos()
 
         for botao in botoes:
             if botao.angulo > 0:
@@ -45,7 +42,7 @@ class Pause_menu:
                 botao.angulo = 3
                 botao.inclina()
 
-        for event in pygame.event.get():
+        for event in pygame.event.get():  # Verifica eventos do teclado, mouse etc
             if event.type == pygame.QUIT:
                 pygame.quit()
 

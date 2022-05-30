@@ -1,5 +1,7 @@
 import os, sys
 
+from pause_menu import Pause_menu
+
 dirpath = os.getcwd()
 sys.path.append(dirpath)
 
@@ -24,6 +26,8 @@ class Game:
 
         self.level = Level()
 
+        self.pause_menu = Pause_menu()
+
         # sound
         main_sound = pygame.mixer.Sound("../audio/main.ogg")
         main_sound.set_volume(0.2)
@@ -36,7 +40,7 @@ class Game:
         count = 0
         pygame.mouse.set_visible(1)
 
-        menu = False
+        menu = True
         p1 = Botao(480, 280, play_btn_image)
         p2 = Botao(480, 425, options_btn_image)
         ex = Botao(480, 570, exit_btn_image)
@@ -59,6 +63,7 @@ class Game:
             count += 1
 
             while menu == True:
+
                 pos = pygame.mouse.get_pos()
 
                 bg = pygame.image.load("../graphics/buttons/main_menu.jpg")
@@ -79,6 +84,13 @@ class Game:
                 ) in pygame.event.get():  # Verifica eventos do teclado, mouse etc
                     if event.type == pygame.QUIT:
                         sys.exit()
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_p:
+                            menu = False
+                    if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        if pygame.sprite.spritecollide(cursor, [botao], False):
+                            pygame.quit()
+                            sys.exit()
 
                 cursor.rect.x = pos[0]
                 cursor.rect.y = pos[1]
