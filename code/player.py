@@ -67,7 +67,7 @@ class Player(Entity):
         self.health = self.stats["health"]
         self.energy = self.stats["energy"]
         self.speed = self.stats["speed"]
-        self.exp = 5000
+        self.exp = 500
 
         # magica
         self.create_magic = create_magic
@@ -87,7 +87,7 @@ class Player(Entity):
         self.invulnerability_duration = 500
 
         # import sound
-        self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword.wav")
+        self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword_sound.wav")
         self.weapon_attack_sound.set_volume(0.4)
 
     def import_player_assets(self):
@@ -120,19 +120,19 @@ class Player(Entity):
             mbutton = pygame.mouse.get_pressed()
 
             # Input movimentação player
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
                 self.direction.y = -1
                 self.status = "up"
-            elif keys[pygame.K_s]:
+            elif keys[pygame.K_s] or keys[pygame.K_DOWN]:
                 self.direction.y = 1
                 self.status = "down"
             else:
                 self.direction.y = 0
 
-            if keys[pygame.K_d]:
+            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
                 self.direction.x = 1
                 self.status = "right"
-            elif keys[pygame.K_a]:
+            elif keys[pygame.K_a] or keys[pygame.K_LEFT]:
                 self.direction.x = -1
                 self.status = "left"
             else:
@@ -283,6 +283,10 @@ class Player(Entity):
     def get_cost_by_index(self, index):
         return list(self.upgrade_cost.values())[index]
 
+    def death(self):
+        if self.health <= 0:
+            pygame.quit()
+
     def update(self):
         self.input()
         self.cooldowns()
@@ -290,3 +294,4 @@ class Player(Entity):
         self.animate()
         self.move(self.stats["speed"])
         self.energy_recovery()
+        self.death()

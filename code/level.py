@@ -10,6 +10,7 @@ from support import *
 from random import choice, randint
 from weapon import Weapon
 from upgrade import Upgrade
+from pause_menu import Pause_menu
 from debug import debug
 from ui import UI
 
@@ -19,7 +20,8 @@ class Level:
 
         # Pegar a display Surface
         self.display_surface = pygame.display.get_surface()
-        self.game_paused = False
+        self.game_paused_upgrade = False
+        self.game_paused_menu = False
 
         # Setup dos Grupos de Sprites
         self.visible_sprites = YSortCameraGroup()
@@ -36,6 +38,7 @@ class Level:
         # interface do usuario
         self.ui = UI()
         self.upgrade = Upgrade(self.player)
+        self.pause_menu = Pause_menu()
 
         # particles
         self.animation_player = AnimationPlayer()
@@ -134,7 +137,7 @@ class Level:
     def create_spattack(self, style, cost):
         if style == "operation_flame":
             if self.player.energy >= cost:
-                # self.player.energy -= cost
+                self.player.energy -= cost
                 self.current_spattack = Spattack(
                     self.player, [self.visible_sprites, self.attack_sprites]
                 )
@@ -184,15 +187,20 @@ class Level:
 
         self.player.exp += amount
 
-    def toggle_menu(self):
-        self.game_paused = not self.game_paused
+    def toggle_upgrade_menu(self):
+        self.game_paused_upgrade = not self.game_paused_upgrade
+
+    def toggle_pause_menu(self):
+        self.game_paused_menu = not self.game_paused_menu
 
     def run(self):
         self.visible_sprites.custom_draw(self.player)
         self.ui.display(self.player)
 
-        if self.game_paused:
+        if self.game_paused_upgrade:
             self.upgrade.display()
+        elif self.game_paused_menu:
+            self.pause_menu.display()   
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)

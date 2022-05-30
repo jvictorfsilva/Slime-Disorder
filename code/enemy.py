@@ -143,7 +143,6 @@ class Enemy(Entity):
                     self.health -= player.get_full_magic_damage()
             if attack_type == "spattack":
                 self.health -= player.get_full_spattack_damage()
-                print(player.get_full_spattack_damage())
             self.hit_time = pygame.time.get_ticks()
             self.vulnerable = False
 
