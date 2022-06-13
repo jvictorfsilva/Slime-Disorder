@@ -87,8 +87,8 @@ class Player(Entity):
         self.invulnerability_duration = 500
 
         # import sound
-        self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword_sound.wav")
-        self.weapon_attack_sound.set_volume(0.4)
+        # self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword_sound.wav")
+        # self.weapon_attack_sound.set_volume(0.4)
 
     def import_player_assets(self):
         character_path = "../graphics/player/"
@@ -143,7 +143,7 @@ class Player(Entity):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
-                self.weapon_attack_sound.play()
+                # self.weapon_attack_sound.play()
 
             # Troca das weapons
 

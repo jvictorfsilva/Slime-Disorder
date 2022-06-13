@@ -12,20 +12,15 @@ class Pause_menu:
 
     def menu_interface(self):
         resume_btn_image = "../graphics/buttons/resume.png"
-        options_btn_image = "../graphics/buttons/options.png"
         exit_btn_image = "../graphics/buttons/exit.png"
         pygame.mouse.set_visible(False)
 
-        p1 = Botao(480, 280, resume_btn_image)
-        p2 = Botao(480, 425, options_btn_image)
-        ex = Botao(480, 570, exit_btn_image)
+        p1 = Botao(480, 325, resume_btn_image)
+        ex = Botao(480, 475, exit_btn_image)
         cursor = Cursor([0, 0])
         botoes = []
         botoes.append(p1)
-        botoes.append(p2)
-        botoes.append(ex)
-        bg = pygame.image.load("../graphics/buttons/pause_menu.png")
-        self.screen.blit(bg, [0, 0])
+        botoes.append(ex)     
 
         logo = pygame.image.load("../graphics/buttons/logo.png")
         self.screen.blit(logo, [185, 0])

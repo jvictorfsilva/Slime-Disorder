@@ -1,7 +1,5 @@
 import os, sys
 
-from pause_menu import Pause_menu
-
 dirpath = os.getcwd()
 sys.path.append(dirpath)
 
@@ -26,29 +24,25 @@ class Game:
 
         self.level = Level()
 
-        self.pause_menu = Pause_menu()
-
         # sound
-        main_sound = pygame.mixer.Sound("../audio/main.ogg")
-        main_sound.set_volume(0.2)
-        main_sound.play(loops=-1)
+        # main_sound = pygame.mixer.Sound("../audio/main.ogg")
+        # main_sound.set_volume(0.2)
+        # main_sound.play(loops=-1)
 
     def run(self):
         play_btn_image = "../graphics/buttons/play.png"
-        options_btn_image = "../graphics/buttons/options.png"
         exit_btn_image = "../graphics/buttons/exit.png"
         count = 0
         pygame.mouse.set_visible(1)
 
+        pause_menu = False
         menu = True
-        p1 = Botao(480, 280, play_btn_image)
-        p2 = Botao(480, 425, options_btn_image)
-        ex = Botao(480, 570, exit_btn_image)
+        play_btn = Botao(480, 325, play_btn_image)
+        exit_btn = Botao(480, 475, exit_btn_image)
         cursor = Cursor([0, 0])
         botoes = []
-        botoes.append(p1)
-        botoes.append(p2)
-        botoes.append(ex)
+        botoes.append(play_btn)
+        botoes.append(exit_btn)
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -58,7 +52,7 @@ class Game:
                     if event.key == pygame.K_TAB:
                         self.level.toggle_upgrade_menu()
                     if event.key == pygame.K_ESCAPE:
-                        self.level.toggle_pause_menu()
+                        pause_menu = True
 
             count += 1
 
@@ -88,9 +82,55 @@ class Game:
                         if event.key == pygame.K_p:
                             menu = False
                     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                        if pygame.sprite.spritecollide(cursor, [botao], False):
+                        if pygame.sprite.spritecollide(cursor, [play_btn], False):
+                            menu = False
+                        if pygame.sprite.spritecollide(cursor, [exit_btn], False):
                             pygame.quit()
                             sys.exit()
+                        
+                            
+
+                cursor.rect.x = pos[0]
+                cursor.rect.y = pos[1]
+                self.screen.blit(cursor.image, pos)
+                pygame.display.flip()
+
+            while pause_menu == True:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        pause_menu == True
+                resume_btn_image = "../graphics/buttons/resume.png"
+                exit_btn_image = "../graphics/buttons/exit.png"
+                pygame.mouse.set_visible(False)
+
+                p1 = Botao(480, 325, resume_btn_image)
+                ex = Botao(480, 475, exit_btn_image)
+                cursor = Cursor([0, 0])
+                botoes = []
+                botoes.append(p1)
+                botoes.append(ex)     
+
+                bg = pygame.image.load("../graphics/buttons/pause_menu.jpg")
+                self.screen.blit(bg, [0, 0])
+
+                logo = pygame.image.load("../graphics/buttons/logo.png")
+                self.screen.blit(logo, [185, 0])
+
+                pos = pygame.mouse.get_pos()
+
+                for botao in botoes:
+                    if botao.angulo > 0:
+                        botao.angulo -= 1
+                        botao.inclina()
+
+                    self.screen.blit(botao.image, [botao.pos_x, botao.pos_y])
+                    if pygame.sprite.spritecollide(cursor, [botao], False):
+                        botao.angulo = 3
+                        botao.inclina()
+
+                for event in pygame.event.get():  # Verifica eventos do teclado, mouse etc
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
 
                 cursor.rect.x = pos[0]
                 cursor.rect.y = pos[1]
@@ -101,11 +141,11 @@ class Game:
             self.level.run()
             # debug('Test')
             pygame.display.update()
-            self.clock.tick(FPS)
-
+            self.clock.tick(FPS)   
 
 class Botao(pygame.sprite.Sprite):
     def __init__(self, x, y, image):
+
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(image)
         self.original = pygame.image.load(image)
@@ -137,6 +177,7 @@ class Cursor(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = pos
         self.selec = 1
 
+        # Cursor = [ Cursor for Cursor in Cursor ]
 
 if __name__ == "__main__":
     game = Game()
