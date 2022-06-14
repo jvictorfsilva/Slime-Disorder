@@ -22,7 +22,7 @@ class UI:
         # Conversão do dict das magicas
         self.magic_graphics = []
         for magic in magic_data.values():
-            magic = pygame.image.load(magic['graphic']).convert_alpha()
+            magic = pygame.image.load(magic["graphic"]).convert_alpha()
             self.magic_graphics.append(magic)
 
     def show_bar(self, current, max_amount, bg_rect, color):

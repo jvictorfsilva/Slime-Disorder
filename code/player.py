@@ -2,6 +2,7 @@ import pygame
 from entity import Entity
 from settings import *
 from support import import_folder
+from menus import *
 
 
 class Player(Entity):
@@ -25,6 +26,7 @@ class Player(Entity):
         # graphics setup
         self.import_player_assets()
         self.status = "down"
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
         # movimento
         self.attacking = False
@@ -87,8 +89,8 @@ class Player(Entity):
         self.invulnerability_duration = 500
 
         # import sound
-        # self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword_sound.wav")
-        # self.weapon_attack_sound.set_volume(0.4)
+        self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword_sound.wav")
+        self.weapon_attack_sound.set_volume(0.4)
 
     def import_player_assets(self):
         character_path = "../graphics/player/"
@@ -143,7 +145,7 @@ class Player(Entity):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
-                # self.weapon_attack_sound.play()
+                self.weapon_attack_sound.play()
 
             # Troca das weapons
 
@@ -284,8 +286,17 @@ class Player(Entity):
         return list(self.upgrade_cost.values())[index]
 
     def death(self):
+        pos = pygame.mouse.get_pos()
+        cursor = Cursor([0, 0])
+        botoes = []
+        death_menu = False
         if self.health <= 0:
-            pygame.quit()
+            death_menu = True
+        while death_menu == True:
+            cursor.rect.x = pos[0]
+            cursor.rect.y = pos[1]
+            self.screen.blit(cursor.image, pos)
+            pygame.display.flip()
 
     def update(self):
         self.input()

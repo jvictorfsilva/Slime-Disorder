@@ -10,7 +10,6 @@ from support import *
 from random import choice, randint
 from weapon import Weapon
 from upgrade import Upgrade
-from pause_menu import Pause_menu
 from debug import debug
 from ui import UI
 
@@ -38,7 +37,6 @@ class Level:
         # interface do usuario
         self.ui = UI()
         self.upgrade = Upgrade(self.player)
-        self.pause_menu = Pause_menu()
 
         # particles
         self.animation_player = AnimationPlayer()
@@ -200,7 +198,7 @@ class Level:
         if self.game_paused_upgrade:
             self.upgrade.display()
         elif self.game_paused_menu:
-            self.pause_menu.display()   
+            self.pause_menu.display()
         else:
             self.visible_sprites.update()
             self.visible_sprites.enemy_update(self.player)
