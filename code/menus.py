@@ -7,6 +7,8 @@ class Menus:
     def __init__(self):
         self.main_menu = True
         self.pause = False
+        self.display_surface = pygame.display.get_surface()
+        # self.pos = pygame.mouse.get_pos()
 
     def menu(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -31,9 +33,6 @@ class Menus:
             for event in pygame.event.get():  # Verifica eventos do teclado, mouse etc
                 if event.type == pygame.QUIT:
                     sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_p:
-                        self.main_menu = False
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if pygame.sprite.spritecollide(cursor, [play_btn], False):
                         self.main_menu = False
@@ -46,9 +45,7 @@ class Menus:
             self.screen.blit(cursor.image, pos)
             pygame.display.flip()
 
-
-class Pause_menu:
-    def pause_menu(self):
+    def pause_menu(self, menu):
         self.pause = True
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         while self.pause == True:
@@ -61,8 +58,6 @@ class Pause_menu:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        self.pause = False
-                    if event.key == pygame.K_SPACE:
                         self.pause = False
 
             pygame.display.flip()

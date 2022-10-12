@@ -4,6 +4,9 @@ import pygame
 from level import Level
 from settings import *
 
+# from debug import debug
+from player import *
+
 dirpath = os.getcwd()
 sys.path.append(dirpath)
 
@@ -22,13 +25,13 @@ class Game:
         self.menus = Menus()
         # sound
         main_sound = pygame.mixer.Sound("../audio/main.ogg")
-        main_sound.set_volume(0.2)
+        main_sound.set_volume(0.05)
         main_sound.play(loops=-1)
 
     def run(self):
         menu = True
         if menu == True:
-            self.menus.Menu()
+            self.menus.menu()
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -38,11 +41,11 @@ class Game:
                     if event.key == pygame.K_TAB:
                         self.level.toggle_upgrade_menu()
                     if event.key == pygame.K_ESCAPE:
-                        self.menus.pause_menu()
+                        self.menus.pause_menu(menu)
 
             self.screen.fill(WATER_COLOR)
             self.level.run()
-            # debug('Test')
+            # debug(Player.rect)
             pygame.display.update()
             self.clock.tick(FPS)
 
