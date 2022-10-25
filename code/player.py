@@ -58,7 +58,7 @@ class Player(Entity):
             "energy": 60,
             "attack": 10,
             "magic": 4,
-            "speed": 15,
+            "speed": 5,
         }
         self.max_stats = {
             "health": 300,

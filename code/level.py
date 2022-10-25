@@ -33,6 +33,8 @@ class Level:
         self.attackable_sprites = pygame.sprite.Group()
         self.teleport_sprites = pygame.sprite.Group()
         self.dialog_sprites = pygame.sprite.Group()
+        self.constructions_sprites = pygame.sprite.Group()
+        self.constructions_details_sprites = pygame.sprite.Group()
 
         # sprite setup
         self.create_map()
@@ -56,12 +58,16 @@ class Level:
             "entities": import_csv_layout("../map/map_Entities.csv"),
             "teleport": import_csv_layout("../map/map_Teleport.csv"),
             "dialog": import_csv_layout("../map/map_Dialog.csv"),
-            # "constructions": import_csv_layout("../map/map_Constructions.csv"),
+            "constructions": import_csv_layout("../map/map_Constructions.csv"),
+            "constructionDetails": import_csv_layout(
+                "../map/map_ConstructionsDetails.csv"
+            ),
         }
         graphics = {
             "grass": import_folder("../graphics/Grass"),
             "object": import_folder("../graphics/objects"),
-            # "constructions": import_folder("../graphics/constructions"),
+            "constructions": import_folder("../graphics/constructions"),
+            "constructionsDetails": import_folder("../graphics/constructions_details"),
         }
 
         for style, layout in layout.items():
@@ -94,16 +100,24 @@ class Level:
                                 "object",
                                 surf,
                             )
-                        # if style == "constructions":
-                        #     # Cria os objetos
-                        #     surf = graphics["constructions"][int(col)]
-                        #     print(surf)
-                        #     Tile(
-                        #         (x, y),
-                        #         [self.visible_sprites, self.obstacle_sprites],
-                        #         "constructions",
-                        #         surf,
-                        #     )
+                        if style == "constructions":
+                            # Cria os objetos
+                            surf = graphics["constructions"][int(col)]
+                            Tile(
+                                (x, y),
+                                [self.visible_sprites, self.obstacle_sprites],
+                                "object",
+                                surf,
+                            )
+                        if style == "constructionDetails":
+                            # Cria os objetos
+                            surf = graphics["constructionsDetails"][int(col)]
+                            Tile(
+                                (x, y),
+                                [self.visible_sprites, self.obstacle_sprites],
+                                "object",
+                                surf,
+                            )
                         if style == "entities":
                             if col == "394":
                                 self.player = Player(
