@@ -1,4 +1,4 @@
-# from dialog import Dialog
+from dialog import Dialog
 import pygame
 from entity import Entity
 from settings import *
@@ -41,7 +41,7 @@ class Player(Entity):
         self.obstacle_sprites = obstacle_sprites
         self.teleport_sprites = teleport_sprites
         self.dialog_sprites = dialog_sprites
-        # self.dialog = Dialog()
+        self.dialog = Dialog()
 
         # Weapon
         self.create_attack = create_attack
@@ -78,7 +78,7 @@ class Player(Entity):
         self.health = self.stats["health"]
         self.energy = self.stats["energy"]
         self.speed = self.stats["speed"]
-        self.exp = 0
+        self.exp = 500
 
         # magica
         self.create_magic = create_magic
@@ -342,4 +342,4 @@ class Player(Entity):
         self.move(self.stats["speed"])
         self.energy_recovery()
         self.death()
-        # self.logic()
+        self.logic()

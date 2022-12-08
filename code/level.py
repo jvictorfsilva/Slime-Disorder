@@ -10,9 +10,12 @@ from support import *
 from random import choice, randint
 from weapon import Weapon
 from upgrade import Upgrade
+from npc import Npc
 
 # from debug import debug
 from ui import UI
+
+# /gamerule keepinventory true
 
 
 class Level:
@@ -131,25 +134,31 @@ class Level:
                                     self.create_magic,
                                     # self.create_spattack,
                                 )
-                            else:
-                                if col == "390":
-                                    monster_name = "bamboo"
-                                elif col == "391":
-                                    monster_name = "spirit"
-                                elif col == "392":
-                                    monster_name = "raccoon"
-                                else:
-                                    monster_name = "squid"
 
-                                Enemy(
-                                    monster_name,
-                                    (x, y),
-                                    [self.visible_sprites, self.attackable_sprites],
-                                    self.obstacle_sprites,
-                                    self.damage_player,
-                                    self.trigger_death_particle,
-                                    self.add_exp,
-                                )
+                            else:
+                                if col == "300":
+                                    npc_name = "fishman"
+                                    Npc(
+                                        npc_name,
+                                        (x, y),
+                                        [self.visible_sprites],
+                                        self.obstacle_sprites,
+                                        self.damage_player,
+                                        self.trigger_death_particle,
+                                        self.add_exp,
+                                    )
+                                elif col == "234":
+                                    monster_name = "knight"
+                            
+                                    Enemy(
+                                        monster_name,
+                                        (x, y),
+                                        [self.visible_sprites, self.attackable_sprites],
+                                        self.obstacle_sprites,
+                                        self.damage_player,
+                                        self.trigger_death_particle,
+                                        self.add_exp,
+                                    )
                         if style == "teleport":
                             Tile((x, y), [self.teleport_sprites], "invisible")
                         if style == "dialog":

@@ -10,7 +10,8 @@ class Dialog:
         self.display_surface = pygame.display.get_surface()
         self.bg = pygame.image.load("../graphics/dialog/DialogBoxFaceset.png")
         self.icon = pygame.image.load("../graphics/dialog/Facesets/Samurai.png")
-        df = pd.read_csv("../dialogs/dialogs.csv", delimiter=";")
+        df = pd.read_csv("../dialogs/fishman.csv", delimiter=";")
+        self.df = df
         self.i = 0
         dfstr = df["text"][self.i]
 
@@ -27,7 +28,7 @@ class Dialog:
     def dialog(self):
         self.pause = True
         while self.pause == True:
-            if self.i < 16:
+            if self.i < 13:
                 self.display_surface.blit(self.bg, [270, 500])
                 self.display_surface.blit(self.icon, [286, 536])
 
@@ -38,12 +39,12 @@ class Dialog:
                     if (
                         event.key == pygame.K_KP_ENTER
                         or event.key == pygame.K_SPACE
-                        and self.i < 16
+                        and self.i < 13
                     ):
                         self.dialog_text(self.i)
                         self.i += 1
                     elif (
-                        self.i == 15
+                        self.i == 13
                         and event.key == pygame.K_KP_ENTER
                         or event.key == pygame.K_SPACE
                     ):
@@ -53,7 +54,7 @@ class Dialog:
         pygame.display.flip()
 
     def dialog_text(self, number):
-        df = pd.read_csv("../dialogs/dialogs.csv", delimiter=";")
+        df = self.df
         dfstr = str(df["text"][number])
         self.dfstr_count = len(dfstr)
 
