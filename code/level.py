@@ -35,6 +35,7 @@ class Level:
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
         self.teleport_sprites = pygame.sprite.Group()
+        self.color_sprites = pygame.sprite.Group()
         self.dialog_sprites = pygame.sprite.Group()
         self.constructions_sprites = pygame.sprite.Group()
         self.constructions_details_sprites = pygame.sprite.Group()
@@ -65,6 +66,7 @@ class Level:
             "constructionDetails": import_csv_layout(
                 "../map/map_ConstructionsDetails.csv"
             ),
+            "color": import_csv_layout("../map/map_Color.csv"),
         }
         graphics = {
             "grass": import_folder("../graphics/Grass"),
@@ -129,6 +131,7 @@ class Level:
                                     self.obstacle_sprites,
                                     self.dialog_sprites,
                                     self.teleport_sprites,
+                                    self.color_sprites,
                                     self.create_attack,
                                     self.destroy_weapon,
                                     self.create_magic,
@@ -149,7 +152,7 @@ class Level:
                                     )
                                 elif col == "234":
                                     monster_name = "knight"
-                            
+
                                     Enemy(
                                         monster_name,
                                         (x, y),
@@ -159,6 +162,13 @@ class Level:
                                         self.trigger_death_particle,
                                         self.add_exp,
                                     )
+                        if style == "colors":
+                            if col == "1":
+                                Tile((x, y), [self.color_sprites], "invisible")
+                            if col == "2":
+                                Tile((x, y), [self.color_sprites], "invisible")
+                            if col == "3":
+                                Tile((x, y), [self.color_sprites], "invisible")
                         if style == "teleport":
                             Tile((x, y), [self.teleport_sprites], "invisible")
                         if style == "dialog":

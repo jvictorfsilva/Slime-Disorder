@@ -21,6 +21,7 @@ class AnimationPlayer:
             "raccoon": import_folder("../graphics/particles/raccoon"),
             "spirit": import_folder("../graphics/particles/nova"),
             "bamboo": import_folder("../graphics/particles/bamboo"),
+            "knight": import_folder("../graphics/particles/smoke"),
             # leafs
             "leaf": (
                 import_folder("../graphics/particles/leaf1"),

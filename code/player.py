@@ -3,6 +3,7 @@ import pygame
 from entity import Entity
 from settings import *
 from support import import_folder
+from debug import debug
 
 # from menus import *
 
@@ -15,6 +16,7 @@ class Player(Entity):
         obstacle_sprites,
         dialog_sprites,
         teleport_sprites,
+        color_sprites,
         create_attack,
         destroy_weapon,
         create_magic,
@@ -22,9 +24,11 @@ class Player(Entity):
     ):
         super().__init__(groups)
         self.image = pygame.image.load(
-            "../graphics/player/down_idle/idle_down.png"
+            "../graphics/player/blue/down_idle/idle_down.png"
         ).convert_alpha()
         self.rect = self.image.get_rect(topleft=pos)
+        self.color = 0
+        self.color_sprites = color_sprites
         self.hitbox = self.rect.inflate(
             HITBOX_OFFSET["player"]
         )  # editar conforme a hitbox do personagem
@@ -78,7 +82,7 @@ class Player(Entity):
         self.health = self.stats["health"]
         self.energy = self.stats["energy"]
         self.speed = self.stats["speed"]
-        self.exp = 500
+        self.exp = 100
 
         # magica
         self.create_magic = create_magic
@@ -102,7 +106,14 @@ class Player(Entity):
         self.weapon_attack_sound.set_volume(0.4)
 
     def import_player_assets(self):
-        character_path = "../graphics/player/"
+        if self.color == 0:
+            character_path = "../graphics/player/blue/"
+        if self.color == 1:
+            character_path = "../graphics/player/red/"
+        if self.color == 2:
+            character_path = "../graphics/player/yellow/"
+        if self.color == 3:
+            character_path = "../graphics/player/green/"
         self.animations = {
             "up": [],
             "down": [],
@@ -148,6 +159,12 @@ class Player(Entity):
                 self.status = "left"
             else:
                 self.direction.x = 0
+
+            self.debug_screen = False
+            if keys[pygame.K_F3] and self.debug_screen == False:
+                self.debug_screen = True
+            if self.debug_screen == True:
+                debug((self.rect[0], self.rect[1]))
 
             # input ataque player
             if mbutton == (1, 0, 0):
@@ -326,12 +343,38 @@ class Player(Entity):
                 self.display_surface.blit(text_surf, text_rect)
                 self.dialog_key_down()
 
-            for sprite in self.teleport_sprites:
-                if sprite.hitbox.colliderect(self.hitbox):
-                    if self.count > 3:
-                        self.hitbox.x = 1988
-                        self.hitbox.y = 4558
-                        self.count += 1
+        for sprite in self.teleport_sprites:
+            if sprite.hitbox.colliderect(self.hitbox):
+                if self.count > 3:
+                    self.hitbox.x = 1988
+                    self.hitbox.y = 4558
+                    self.count += 1
+
+        if (
+            self.rect[0] >= 3385
+            and self.rect[0] <= 3655
+            and self.rect[1] >= 2444
+            and self.rect[1] <= 2619
+        ):
+            if self.color == 0:
+                self.color = 1
+        elif (
+            self.rect[0] >= 2297
+            and self.rect[0] <= 2503
+            and self.rect[1] >= 4522
+            and self.rect[1] <= 4537
+        ):
+            if self.color == 1:
+                self.color = 2
+        # elif (
+        #     self.rect[0] >= 3385
+        #     and self.rect[0] <= 3655
+        #     and self.rect[1] >= 2444
+        #     and self.rect[1] <= 2619
+        # ):
+        #     if self.color == 0:
+        #         self.color = 1
+
         pygame.display.flip()
 
     def update(self):
@@ -343,3 +386,4 @@ class Player(Entity):
         self.energy_recovery()
         self.death()
         self.logic()
+        self.import_player_assets()
