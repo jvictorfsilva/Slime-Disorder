@@ -317,6 +317,7 @@ class Player(Entity):
         death_menu = False
         if self.health <= 0:
             death_menu = True
+            self.health = 1
         # while death_menu == True:
         #     pygame.display.flip()
 

@@ -42,7 +42,6 @@ class Game:
                     if event.key == pygame.K_TAB:
                         self.level.toggle_upgrade_menu()
                     if event.key == pygame.K_ESCAPE:
-                        cutscene_is_running = False
                         self.menus.pause_menu(menu)
                     if event.key == pygame.K_SPACE:
                         cutscene_is_running += 1
