@@ -1,5 +1,6 @@
 import pygame
 from math import sin
+from player import *
 
 
 class Entity(pygame.sprite.Sprite):
@@ -8,6 +9,7 @@ class Entity(pygame.sprite.Sprite):
         self.frame_index = 0
         self.animation_speed = 0.15
         self.direction = pygame.math.Vector2()
+        self.count = 0
 
     def move(self, speed):
         if self.direction.magnitude() != 0:

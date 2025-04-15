@@ -10,8 +10,12 @@ from support import *
 from random import choice, randint
 from weapon import Weapon
 from upgrade import Upgrade
-from debug import debug
+from npc import Npc
+
+# from debug import debug
 from ui import UI
+
+# /gamerule keepinventory true
 
 
 class Level:
@@ -30,6 +34,11 @@ class Level:
         self.current_attack = None
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
+        self.teleport_sprites = pygame.sprite.Group()
+        self.color_sprites = pygame.sprite.Group()
+        self.dialog_sprites = pygame.sprite.Group()
+        self.constructions_sprites = pygame.sprite.Group()
+        self.constructions_details_sprites = pygame.sprite.Group()
 
         # sprite setup
         self.create_map()
@@ -51,10 +60,19 @@ class Level:
             "grass": import_csv_layout("../map/map_Grass.csv"),
             "object": import_csv_layout("../map/map_Objects.csv"),
             "entities": import_csv_layout("../map/map_Entities.csv"),
+            "teleport": import_csv_layout("../map/map_Teleport.csv"),
+            "dialog": import_csv_layout("../map/map_Dialog.csv"),
+            "constructions": import_csv_layout("../map/map_Constructions.csv"),
+            "constructionDetails": import_csv_layout(
+                "../map/map_ConstructionsDetails.csv"
+            ),
+            "color": import_csv_layout("../map/map_Color.csv"),
         }
         graphics = {
             "grass": import_folder("../graphics/Grass"),
             "object": import_folder("../graphics/objects"),
+            "constructions": import_folder("../graphics/constructions"),
+            "constructionsDetails": import_folder("../graphics/constructions_details"),
         }
 
         for style, layout in layout.items():
@@ -87,36 +105,74 @@ class Level:
                                 "object",
                                 surf,
                             )
+                        if style == "constructions":
+                            # Cria os objetos
+                            surf = graphics["constructions"][int(col)]
+                            Tile(
+                                (x, y),
+                                [self.visible_sprites, self.obstacle_sprites],
+                                "object",
+                                surf,
+                            )
+                        if style == "constructionDetails":
+                            # Cria os objetos
+                            surf = graphics["constructionsDetails"][int(col)]
+                            Tile(
+                                (x, y),
+                                [self.visible_sprites, self.obstacle_sprites],
+                                "object",
+                                surf,
+                            )
                         if style == "entities":
                             if col == "394":
                                 self.player = Player(
                                     (x, y),
                                     [self.visible_sprites],
                                     self.obstacle_sprites,
+                                    self.dialog_sprites,
+                                    self.teleport_sprites,
+                                    self.color_sprites,
                                     self.create_attack,
                                     self.destroy_weapon,
                                     self.create_magic,
-                                    self.create_spattack,
+                                    # self.create_spattack,
                                 )
-                            else:
-                                if col == "390":
-                                    monster_name = "bamboo"
-                                elif col == "391":
-                                    monster_name = "spirit"
-                                elif col == "392":
-                                    monster_name = "raccoon"
-                                else:
-                                    monster_name = "squid"
 
-                                Enemy(
-                                    monster_name,
-                                    (x, y),
-                                    [self.visible_sprites, self.attackable_sprites],
-                                    self.obstacle_sprites,
-                                    self.damage_player,
-                                    self.trigger_death_particle,
-                                    self.add_exp,
-                                )
+                            else:
+                                if col == "300":
+                                    npc_name = "fishman"
+                                    Npc(
+                                        npc_name,
+                                        (x, y),
+                                        [self.visible_sprites],
+                                        self.obstacle_sprites,
+                                        self.damage_player,
+                                        self.trigger_death_particle,
+                                        self.add_exp,
+                                    )
+                                elif col == "234":
+                                    monster_name = "knight"
+
+                                    Enemy(
+                                        monster_name,
+                                        (x, y),
+                                        [self.visible_sprites, self.attackable_sprites],
+                                        self.obstacle_sprites,
+                                        self.damage_player,
+                                        self.trigger_death_particle,
+                                        self.add_exp,
+                                    )
+                        if style == "colors":
+                            if col == "1":
+                                Tile((x, y), [self.color_sprites], "invisible")
+                            if col == "2":
+                                Tile((x, y), [self.color_sprites], "invisible")
+                            if col == "3":
+                                Tile((x, y), [self.color_sprites], "invisible")
+                        if style == "teleport":
+                            Tile((x, y), [self.teleport_sprites], "invisible")
+                        if style == "dialog":
+                            Tile((x, y), [self.dialog_sprites], "invisible")
 
     def create_attack(self):
         self.current_attack = Weapon(
@@ -127,18 +183,18 @@ class Level:
         if style == "heal":
             self.magic_player.heal(self.player, strength, cost, [self.visible_sprites])
 
-        if style == "flame":
-            self.magic_player.flame(
-                self.player, cost, [self.visible_sprites, self.attack_sprites]
-            )
+        # if style == "flame":
+        #     self.magic_player.flame(
+        #         self.player, cost, [self.visible_sprites, self.attack_sprites]
+        #     )
 
-    def create_spattack(self, style, cost):
-        if style == "operation_flame":
-            if self.player.energy >= cost:
-                self.player.energy -= cost
-                self.current_spattack = Spattack(
-                    self.player, [self.visible_sprites, self.attack_sprites]
-                )
+    # def create_spattack(self, style, cost):
+    #     if style == "operation_flame":
+    #         if self.player.energy >= cost:
+    #             self.player.energy -= cost
+    #             self.current_spattack = Spattack(
+    #                 self.player, [self.visible_sprites, self.attack_sprites]
+    #             )
 
     def destroy_weapon(self):
         if self.current_attack:
