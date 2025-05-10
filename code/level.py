@@ -98,7 +98,8 @@ class Level:
                             )
                         if style == "object":
                             # Cria os objetos
-                            surf = graphics["object"][int(col)]
+                            idx = int(col) - 1
+                            surf = graphics["object"][idx]
                             Tile(
                                 (x, y),
                                 [self.visible_sprites, self.obstacle_sprites],
@@ -107,7 +108,8 @@ class Level:
                             )
                         if style == "constructions":
                             # Cria os objetos
-                            surf = graphics["constructions"][int(col)]
+                            idx = int(col) - 1
+                            surf = graphics["constructions"][idx]
                             Tile(
                                 (x, y),
                                 [self.visible_sprites, self.obstacle_sprites],
@@ -116,7 +118,8 @@ class Level:
                             )
                         if style == "constructionDetails":
                             # Cria os objetos
-                            surf = graphics["constructionsDetails"][int(col)]
+                            idx = int(col) - 1
+                            surf = graphics["constructionsDetails"][idx]
                             Tile(
                                 (x, y),
                                 [self.visible_sprites, self.obstacle_sprites],
