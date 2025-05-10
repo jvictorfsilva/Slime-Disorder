@@ -15,22 +15,17 @@ from npc import Npc
 # from debug import debug
 from ui import UI
 
-# /gamerule keepinventory true
-
 
 class Level:
     def __init__(self):
 
-        # Pegar a display Surface
         self.display_surface = pygame.display.get_surface()
         self.game_paused_upgrade = False
         self.game_paused_menu = False
 
-        # Setup dos Grupos de Sprites
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
 
-        # attack sprites
         self.current_attack = None
         self.attack_sprites = pygame.sprite.Group()
         self.attackable_sprites = pygame.sprite.Group()
@@ -40,18 +35,14 @@ class Level:
         self.constructions_sprites = pygame.sprite.Group()
         self.constructions_details_sprites = pygame.sprite.Group()
 
-        # sprite setup
         self.create_map()
 
-        # interface do usuario
         self.ui = UI()
         self.upgrade = Upgrade(self.player)
 
-        # particles
         self.animation_player = AnimationPlayer()
         self.magic_player = MagicPlayer(self.animation_player)
 
-        # spattack sprites
         self.current_spattack = None
 
     def create_map(self):
@@ -84,7 +75,6 @@ class Level:
                         if style == "boundary":
                             Tile((x, y), [self.obstacle_sprites], "invisible")
                         if style == "grass":
-                            # Cria a grama
                             random_grass_image = choice(graphics["grass"])
                             Tile(
                                 (x, y),
@@ -97,7 +87,6 @@ class Level:
                                 random_grass_image,
                             )
                         if style == "object":
-                            # Cria os objetos
                             idx = int(col) - 1
                             surf = graphics["object"][idx]
                             Tile(
@@ -107,7 +96,6 @@ class Level:
                                 surf,
                             )
                         if style == "constructions":
-                            # Cria os objetos
                             idx = int(col) - 1
                             surf = graphics["constructions"][idx]
                             Tile(
@@ -117,7 +105,6 @@ class Level:
                                 surf,
                             )
                         if style == "constructionDetails":
-                            # Cria os objetos
                             idx = int(col) - 1
                             surf = graphics["constructionsDetails"][idx]
                             Tile(
@@ -267,28 +254,23 @@ class Level:
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
 
-        # general setup
         super().__init__()
         self.display_surface = pygame.display.get_surface()
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         self.offset = pygame.math.Vector2()
 
-        # Criação do Chão
         self.floor_surf = pygame.image.load("../graphics/tilemap/ground.png").convert()
         self.floor_rect = self.floor_surf.get_rect(topleft=(0, 0))
 
     def custom_draw(self, player):
 
-        # getting the offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
 
-        # drawing the floor
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
-        # for sprite in self.sprites():
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_pos)

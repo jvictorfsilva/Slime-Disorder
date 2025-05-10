@@ -29,16 +29,12 @@ class Player(Entity):
         self.rect = self.image.get_rect(topleft=pos)
         self.color = 0
         self.color_sprites = color_sprites
-        self.hitbox = self.rect.inflate(
-            HITBOX_OFFSET["player"]
-        )  # editar conforme a hitbox do personagem
+        self.hitbox = self.rect.inflate(HITBOX_OFFSET["player"])
 
-        # graphics setup
         self.import_player_assets()
         self.status = "down"
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-        # movimento
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
@@ -47,7 +43,6 @@ class Player(Entity):
         self.dialog_sprites = dialog_sprites
         self.dialog = Dialog()
 
-        # Weapon
         self.create_attack = create_attack
         self.destroy_weapon = destroy_weapon
         self.weapon_index = 0
@@ -56,7 +51,6 @@ class Player(Entity):
         self.weapon_switch_time = None
         self.switch_duration_cooldown = 200
 
-        # status
         self.stats = {
             "health": 100,
             "energy": 60,
@@ -84,24 +78,20 @@ class Player(Entity):
         self.speed = self.stats["speed"]
         self.exp = 100
 
-        # magica
         self.create_magic = create_magic
         self.magic_index = 0
         self.magic = list(magic_data.keys())[self.magic_index]
         self.can_switch_magic = True
         self.magic_switch_time = None
 
-        # Special Attack
         # self.create_spattack = create_spattack
         # self.spattack_index = 0
         # self.spattack = list(spattack_data.keys())[self.spattack_index]
 
-        # damage timer
         self.vulnerable = True
         self.hurt_time = None
         self.invulnerability_duration = 500
 
-        # import sound
         self.weapon_attack_sound = pygame.mixer.Sound("../audio/sword_sound.wav")
         self.weapon_attack_sound.set_volume(0.4)
 
@@ -141,7 +131,6 @@ class Player(Entity):
             keys = pygame.key.get_pressed()
             mbutton = pygame.mouse.get_pressed()
 
-            # Input movimentação player
             if keys[pygame.K_w] or keys[pygame.K_UP]:
                 self.direction.y = -1
                 self.status = "up"
@@ -166,14 +155,11 @@ class Player(Entity):
             if self.debug_screen == True:
                 debug((self.rect[0], self.rect[1]))
 
-            # input ataque player
             if mbutton == (1, 0, 0):
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
                 self.create_attack()
                 self.weapon_attack_sound.play()
-
-            # Troca das weapons
 
             if keys[pygame.K_q] and self.can_switch_weapon:
 
@@ -187,7 +173,6 @@ class Player(Entity):
 
                 self.weapon = list(weapon_data.keys())[self.weapon_index]
 
-            # input poder/magica
             if keys[pygame.K_f]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
@@ -198,8 +183,6 @@ class Player(Entity):
                 )
                 cost = list(magic_data.values())[self.magic_index]["cost"]
                 self.create_magic(style, strength, cost)
-
-            # troca poder/magica
 
             if keys[pygame.K_e] and self.can_switch_magic:
 
@@ -213,7 +196,6 @@ class Player(Entity):
 
                 self.magic = list(magic_data.keys())[self.magic_index]
 
-            # special attack
             # if self.weapon_index == 3 and self.magic_index == 0:
             #     if keys[pygame.K_x]:
             #         self.attacking = True
@@ -224,7 +206,6 @@ class Player(Entity):
 
     def get_status(self):
 
-        # Parado
         if self.direction.x == 0 and self.direction.y == 0:
             if not "idle" in self.status and not "attack" in self.status:
                 self.status = self.status + "_idle"
@@ -266,16 +247,13 @@ class Player(Entity):
     def animate(self):
         animation = self.animations[self.status]
 
-        # loop over the frame index
         self.frame_index += self.animation_speed
         if self.frame_index >= len(animation):
             self.frame_index = 0
 
-        # set the image
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
-        # flicker
         if not self.vulnerable:
             alpha = self.wave_value()
             self.image.set_alpha(alpha)
@@ -300,7 +278,6 @@ class Player(Entity):
     def energy_recovery(self):
         if self.energy < self.stats["energy"]:
 
-            # Calculo regeneração de mana
             self.energy += 0.01 * (self.stats["magic"] * 0.25)
         else:
             self.energy = self.stats["energy"]

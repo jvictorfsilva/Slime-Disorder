@@ -7,11 +7,9 @@ class Spattack(pygame.sprite.Sprite):
         self.sprite_type = "spattack"
         direction = player.status.split("_")[0]
 
-        # grafico
         full_path = f"../graphics/spattacks/{player.spattack}/{direction}.png"
         self.image = pygame.image.load(full_path).convert_alpha()
 
-        # placement
         if direction == "right":
             self.rect = self.image.get_rect(
                 midleft=player.rect.midright + pygame.math.Vector2(0, 16)

@@ -6,23 +6,19 @@ from random import choice
 class AnimationPlayer:
     def __init__(self):
         self.frames = {
-            # magic
             "flame": import_folder("../graphics/particles/flame/frames"),
             "aura": import_folder("../graphics/particles/aura"),
             "heal": import_folder("../graphics/particles/heal/frames"),
-            # attacks
             "claw": import_folder("../graphics/particles/claw"),
             "slash": import_folder("../graphics/particles/slash"),
             "sparkle": import_folder("../graphics/particles/sparkle"),
             "leaf_attack": import_folder("../graphics/particles/leaf_attack"),
             "thunder": import_folder("../graphics/particles/thunder"),
-            # monster deaths
             "squid": import_folder("../graphics/particles/smoke_orange"),
             "raccoon": import_folder("../graphics/particles/raccoon"),
             "spirit": import_folder("../graphics/particles/nova"),
             "bamboo": import_folder("../graphics/particles/bamboo"),
             "knight": import_folder("../graphics/particles/smoke"),
-            # leafs
             "leaf": (
                 import_folder("../graphics/particles/leaf1"),
                 import_folder("../graphics/particles/leaf2"),

@@ -4,38 +4,31 @@ from settings import *
 
 class UI:
     def __init__(self):
-        # Geral
         self.display_surface = pygame.display.get_surface()
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
 
-        # Bar Setup
         self.health_bar_rect = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
         self.energy_bar_rect = pygame.Rect(10, 34, ENERGY_BAR_WIDTH, BAR_HEIGHT)
 
-        # Conversão do dict das weapons
         self.weapon_graphics = []
         for weapon in weapon_data.values():
             path = weapon["graphic"]
             weapon = pygame.image.load(path).convert_alpha()
             self.weapon_graphics.append(weapon)
 
-        # Conversão do dict das magicas
         self.magic_graphics = []
         for magic in magic_data.values():
             magic = pygame.image.load(magic["graphic"]).convert_alpha()
             self.magic_graphics.append(magic)
 
     def show_bar(self, current, max_amount, bg_rect, color):
-        # draw bg (Aparecer o fundo)
         pygame.draw.rect(self.display_surface, UI_BG_COLOR, bg_rect)
 
-        # converting stat to pixel
         ratio = current / max_amount
         current_width = bg_rect.width * ratio
         current_rect = bg_rect.copy()
         current_rect.width = current_width
 
-        # drawing the bar
         pygame.draw.rect(self.display_surface, color, current_rect)
         pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
 
@@ -61,14 +54,14 @@ class UI:
         return bg_rect
 
     def weapon_overlay(self, weapon_index, has_switched):
-        bg_rect = self.selection_box(10, 630, has_switched)  # armamento
+        bg_rect = self.selection_box(10, 630, has_switched)
         weapon_surf = self.weapon_graphics[weapon_index]
         weapon_rect = weapon_surf.get_rect(center=bg_rect.center)
 
         self.display_surface.blit(weapon_surf, weapon_rect)
 
     def magic_overlay(self, magic_index, has_switched):
-        bg_rect = self.selection_box(80, 635, has_switched)  # armamento
+        bg_rect = self.selection_box(80, 635, has_switched)
         magic_surf = self.magic_graphics[magic_index]
         magic_rect = magic_surf.get_rect(center=bg_rect.center)
 

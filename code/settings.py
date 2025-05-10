@@ -3,10 +3,8 @@ HEIGHT = 720
 FPS = 60
 TILESIZE = 64
 
-# Hitboxes
 HITBOX_OFFSET = {"player": [-8, 0], "object": -40, "grass": -10, "invisible": 0}
 
-# HUD
 BAR_HEIGHT = 20
 HEALTH_BAR_WIDTH = 200
 ENERGY_BAR_WIDTH = 140
@@ -14,24 +12,19 @@ ITEM_BOX_SIZE = 80
 UI_FONT = "../graphics/font/joystix.ttf"
 UI_FONT_SIZE = 18
 
-# Cores Geral
 WATER_COLOR = "#71ddee"
 UI_BG_COLOR = "#222222"
 UI_BORDER_COLOR = "#111111"
 TEXT_COLOR = "#EEEEEE"
 
-# Cores HUD
 HEALTH_COLOR = "#B20002"
 ENERGY_COLOR = "gold"
 UI_BORDER_COLOR_ACTIVE = "gold"
 
-# Cores Menu Upgrade
 TEXT_COLOR_SELECTED = "#111111"
 BAR_COLOR = "#EEEEEE"
 BAR_COLOR_SELECTED = "#111111"
 UPGRADE_BG_COLOR_SELECTED = "#EEEEEE"
-
-# weapon
 
 weapon_data = {
     "sword": {
@@ -71,8 +64,6 @@ weapon_data = {
     # },
 }
 
-# magic
-
 magic_data = {
     # "flame": {
     #     "strength": 5,
@@ -86,8 +77,6 @@ magic_data = {
     },
 }
 
-# special attack
-
 spattack_data = {
     "operation_flame": {
         "damage": 53,
@@ -95,8 +84,6 @@ spattack_data = {
     },
 }
 
-
-# enemy
 
 monster_data = {
     "knight": {

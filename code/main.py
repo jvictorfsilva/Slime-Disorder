@@ -13,7 +13,6 @@ from player import *
 
 class Game:
     def __init__(self):
-        # setup geral
         pygame.init()
         screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.screen = screen
@@ -21,7 +20,6 @@ class Game:
         self.clock = pygame.time.Clock()
         self.level = Level()
         self.menus = Menus()
-        # sound
         main_sound = pygame.mixer.Sound("../audio/main.ogg")
         main_sound.set_volume(0.35)
         main_sound.play(loops=-1)

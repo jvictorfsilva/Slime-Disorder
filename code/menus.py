@@ -30,7 +30,7 @@ class Menus:
             for botao in botoes:
                 self.screen.blit(botao.image, [botao.pos_x, botao.pos_y])
 
-            for event in pygame.event.get():  # Verifica eventos do teclado, mouse etc
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
@@ -53,7 +53,7 @@ class Menus:
             bg = pygame.image.load("../graphics/buttons/pause_menu.png")
             self.screen.blit(bg, [0, 0])
 
-            for event in pygame.event.get():  # Verifica eventos do teclado, mouse etc
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
@@ -69,10 +69,8 @@ class Botao(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(image)
         self.original = pygame.image.load(image)
-        self.angulo = 0
-        # posicao no quadro
+        self.angle = 0
         self.rect = self.image.get_rect()
-        # posicao relativa
         self.pos_x = x
         self.pos_y = y
 
